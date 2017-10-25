@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import BasalRate from './BasalRate'
+import Calculator from './Calculator'
 import '../App.css'
 
 class App extends Component {
@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1><i><u>Kevin's Nutrition Calculator</u></i></h1>
-        <BasalRate />
+        <Calculator />
       </div>
     )
   }

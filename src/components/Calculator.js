@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { EventEmitter } from 'events'
+import Basal from './Basal'
 
-class BasalRate extends Component {
+class Calculator extends Component {
 
   constructor(props) {
     super(props)
@@ -13,6 +15,26 @@ class BasalRate extends Component {
     }
   }
 
+  componentWillMount() {
+    this.eventEmitter = new EventEmitter()
+
+    this.eventEmitter.addListener("updateSex", (newSex) => {
+      this.handleSex(newSex)
+    })
+
+    this.eventEmitter.addListener("updateWgt", (newWgt) => {
+      this.handleWgt(newWgt)
+    })
+
+    this.eventEmitter.addListener("updateHgt", (newHgt) => {
+      this.handleHgt(newHgt)
+    })
+
+    this.eventEmitter.addListener("updateAge", (newAge) => {
+      this.handleAge(newAge)
+    })
+  }
+
   handleSex(newSex) {
     if( newSex == "Male" && this.state.sex == "Female" ) {
       this.setState({ sex: "Male" })
@@ -22,15 +44,15 @@ class BasalRate extends Component {
   }
 
   handleWgt(e) {
-    this.setState({ weight: e.target.value })
+    this.setState({ weight: e })
   }
 
   handleHgt(e) {
-    this.setState({ height: e.target.value })
+    this.setState({ height: e })
   }
 
   handleAge(e) {
-    this.setState({ age: e.target.value })
+    this.setState({ age: e })
   }
 
   handleExer(newEx) {
@@ -79,38 +101,14 @@ class BasalRate extends Component {
   render() {
     return(
       <div>
-        <h2>Basal Metabolic Rate</h2>
-        <p>This is how many calories your body would burn if you were to sleep all day. <br/>This is determined by several biological factors.</p>
-        <div className="row">
-          <div 
-            className={this.state.sex == "Male" ? "col-md-5 sex-btn active-box" : "col-md-5 sex-btn"}
-            onClick={this.handleSex.bind(this, "Male")}
-            >Male</div>
-          <div 
-            className={this.state.sex == "Female" ? "col-md-5 sex-btn active-box" : "col-md-5 sex-btn"}
-            onClick={this.handleSex.bind(this, "Female")}
-            >Female</div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-4 form-group">
-            <label>Weight (lbs):</label>
-            <input type="number" className="form-control" min="0" max="130" 
-              defaultValue={this.state.weight} onChange={this.handleWgt.bind(this)} />
-          </div>
-          <div className="col-md-4 form-group">
-            <label>Height (ins):</label>
-            <input type="number" className="form-control" min="0" max="130" 
-              defaultValue={this.state.height} onChange={this.handleHgt.bind(this)} />
-          </div>
-          <div className="col-md-4 form-group">
-            <label>Age (yrs):</label>
-            <input type="number" className="form-control" min="0" max="130" 
-              defaultValue={this.state.age} onChange={this.handleAge.bind(this)} />
-          </div>
-        </div>
-
-        <h3>Your Basal Metabolic Rate is <b>{this.calcBasal()}</b> kcal per day.</h3>
+        <Basal 
+          eventEmitter={this.eventEmitter}
+          sex={this.state.sex}
+          weight={this.state.weight}
+          height={this.state.height}
+          age={this.state.age}
+          calcBasal={this.calcBasal()}
+        />
 
         <h2>Daily Caloric Need</h2>
         <p>Daily Caloric Need is calculated according to your activity level. <br/>Light exercise is 1-3 days per week, Moderate is 3-5 days per week. <br/>Heavy is 6-7 days per week. Extreme is twice per day, or extra heavy workouts.</p>
@@ -144,4 +142,4 @@ class BasalRate extends Component {
   }
 }
 
-export default BasalRate
+export default Calculator
