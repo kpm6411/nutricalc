@@ -1,0 +1,58 @@
+body {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+h3 {
+  margin-bottom: 40px;
+}
+
+b {
+  color: greenyellow
+}
+
+.container {
+  margin: auto;
+}
+
+.sex-btn {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: 2.5em;
+  width: 10em;
+  background-color: orangered;
+  border: 5px solid black;
+  color: black;
+  font-size: 1.25em;
+  cursor: pointer;
+  margin-bottom: 1em;
+  margin-left: 20px;
+}
+
+.ex-btn {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: 5em;
+  width: 7em;
+  background-color: orangered;
+  border: 5px solid black;
+  color: black;
+  font-size: 1.25em;
+  cursor: pointer;
+  margin-bottom: 1em;
+  margin-left: 20px;
+}
+
+.active-box {
+  background-color: coral;
+  border: 5px solid white;
+}
