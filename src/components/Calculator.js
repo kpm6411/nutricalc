@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { EventEmitter } from 'events'
 import Basal from './Basal'
+import Daily from './Daily'
 
 class Calculator extends Component {
 
@@ -19,46 +20,30 @@ class Calculator extends Component {
     this.eventEmitter = new EventEmitter()
 
     this.eventEmitter.addListener("updateSex", (newSex) => {
-      this.handleSex(newSex)
+      if( newSex == "Male" && this.state.sex == "Female" ) {
+        this.setState({ sex: "Male" })
+      } else if( newSex == "Female" && this.state.sex == "Male" ) {
+        this.setState({ sex: "Female" })
+      }
     })
 
     this.eventEmitter.addListener("updateWgt", (newWgt) => {
-      this.handleWgt(newWgt)
+      this.setState({ weight: newWgt })
     })
 
     this.eventEmitter.addListener("updateHgt", (newHgt) => {
-      this.handleHgt(newHgt)
+      this.setState({ height: newHgt })
     })
 
     this.eventEmitter.addListener("updateAge", (newAge) => {
-      this.handleAge(newAge)
+      this.setState({ age: newAge })
     })
-  }
 
-  handleSex(newSex) {
-    if( newSex == "Male" && this.state.sex == "Female" ) {
-      this.setState({ sex: "Male" })
-    } else if( newSex == "Female" && this.state.sex == "Male" ) {
-      this.setState({ sex: "Female" })
-    }
-  }
-
-  handleWgt(e) {
-    this.setState({ weight: e })
-  }
-
-  handleHgt(e) {
-    this.setState({ height: e })
-  }
-
-  handleAge(e) {
-    this.setState({ age: e })
-  }
-
-  handleExer(newEx) {
-    if(newEx != this.state.exercise) {
-      this.setState({ exercise: newEx })
-    }
+    this.eventEmitter.addListener("updateExercise", (newEx) => {
+      if(newEx != this.state.exercise) {
+        this.setState({ exercise: newEx })
+      }
+    })
   }
 
   calcBasal() {
@@ -110,33 +95,11 @@ class Calculator extends Component {
           calcBasal={this.calcBasal()}
         />
 
-        <h2>Daily Caloric Need</h2>
-        <p>Daily Caloric Need is calculated according to your activity level. <br/>Light exercise is 1-3 days per week, Moderate is 3-5 days per week. <br/>Heavy is 6-7 days per week. Extreme is twice per day, or extra heavy workouts.</p>
-
-        <div className="row">
-          <div 
-            className={this.state.exercise == "little" ? "col-md-2 ex-btn active-box" : "col-md-5 ex-btn"}
-            onClick={this.handleExer.bind(this, "little")}
-            >Little Exercise</div>
-          <div 
-            className={this.state.exercise == "light" ? "col-md-2 ex-btn active-box" : "col-md-5 ex-btn"}
-            onClick={this.handleExer.bind(this, "light")}
-            >Light Exercise</div>
-          <div 
-            className={this.state.exercise == "moderate" ? "col-md-2 ex-btn active-box" : "col-md-5 ex-btn"}
-            onClick={this.handleExer.bind(this, "moderate")}
-            >Moderate Exercise</div>
-          <div 
-            className={this.state.exercise == "heavy" ? "col-md-2 ex-btn active-box" : "col-md-5 ex-btn"}
-            onClick={this.handleExer.bind(this, "heavy")}
-            >Heavy Exercise</div>
-          <div 
-            className={this.state.exercise == "extreme" ? "col-md-2 ex-btn active-box" : "col-md-5 ex-btn"}
-            onClick={this.handleExer.bind(this, "extreme")}
-            >Extreme Exercise</div>
-        </div>
-
-        <h3>Your Daily Caloric Need is <b>{this.calcDaily()}</b> kcal per day.</h3>
+        <Daily 
+          eventEmitter={this.eventEmitter}
+          exercise={this.state.exercise}
+          calcDaily={this.calcDaily()}
+        />
       </div>      
     )
   }
