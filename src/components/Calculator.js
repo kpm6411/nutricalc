@@ -20,9 +20,9 @@ class Calculator extends Component {
     this.eventEmitter = new EventEmitter()
 
     this.eventEmitter.addListener("updateSex", (newSex) => {
-      if( newSex == "Male" && this.state.sex == "Female" ) {
+      if( newSex === "Male" && this.state.sex === "Female" ) {
         this.setState({ sex: "Male" })
-      } else if( newSex == "Female" && this.state.sex == "Male" ) {
+      } else if( newSex === "Female" && this.state.sex === "Male" ) {
         this.setState({ sex: "Female" })
       }
     })
@@ -40,14 +40,14 @@ class Calculator extends Component {
     })
 
     this.eventEmitter.addListener("updateExercise", (newEx) => {
-      if(newEx != this.state.exercise) {
+      if(newEx !== this.state.exercise) {
         this.setState({ exercise: newEx })
       }
     })
   }
 
   calcBasal() {
-    if(this.state.sex == "Male") {
+    if(this.state.sex === "Male") {
       return (
         Math.floor(66 + (6.2 * this.state.weight) + (12.7 * this.state.height) - (6.76 * this.state.age))
       )
@@ -86,7 +86,7 @@ class Calculator extends Component {
   render() {
     return(
       <div>
-        <Basal 
+        <Basal
           eventEmitter={this.eventEmitter}
           sex={this.state.sex}
           weight={this.state.weight}
@@ -95,12 +95,12 @@ class Calculator extends Component {
           calcBasal={this.calcBasal()}
         />
 
-        <Daily 
+        <Daily
           eventEmitter={this.eventEmitter}
           exercise={this.state.exercise}
           calcDaily={this.calcDaily()}
         />
-      </div>      
+      </div>
     )
   }
 }
